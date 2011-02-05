@@ -1,0 +1,17 @@
+!!! 5
+%html
+  %head
+    %title Course Evaluations
+    %meta{ 'http-equiv' => 'X-UA-Compatible', :content => 'IE=8,chrome=1' }/
+  %body
+    %div#header
+      %div
+        %div.logo
+          =image_tag("logo.png")
+        %div.tagline
+          Course Evaluation Tool
+        %div.navigation
+    %div#content
+      #content=yield
+    %div#footer
+      %div.footer-content Copyright &copy; 2010 by Mitch Amiano. All Rights Reserved

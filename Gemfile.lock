@@ -1,28 +1,86 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    activesupport (3.0.3)
+    backports (1.18.2)
+    compass (0.10.6)
+      haml (>= 3.0.4)
+    compass-less-plugin (0.8)
+      compass (>= 0.10)
     configuration (1.2.0)
+    diff-lcs (1.1.2)
+    haml (3.0.25)
     heroku (1.17.8)
       json (~> 1.4.6)
       launchy (~> 0.3.2)
       rest-client (>= 1.4.0, < 1.7.0)
+    i18n (0.5.0)
     json (1.4.6)
     launchy (0.3.7)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
+    mail (2.2.14)
+      activesupport (>= 2.3.6)
+      i18n (>= 0.4.0)
+      mime-types (~> 1.16)
+      treetop (~> 1.4.8)
     mime-types (1.16)
+    monkey-lib (0.5.4)
+      backports
+    mysql (2.8.1)
+    polyglot (0.3.1)
+    pony (1.1)
+      mail (> 2.0)
     rack (1.2.1)
+    rack-test (0.5.7)
+      rack (>= 1.0)
     rake (0.8.7)
     rest-client (1.6.1)
       mime-types (>= 1.16)
+    rspec (2.4.0)
+      rspec-core (~> 2.4.0)
+      rspec-expectations (~> 2.4.0)
+      rspec-mocks (~> 2.4.0)
+    rspec-core (2.4.0)
+    rspec-expectations (2.4.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.4.0)
+    sequel (3.19.0)
     sinatra (1.1.2)
       rack (~> 1.1)
       tilt (~> 1.2)
+    sinatra-advanced-routes (0.5.1)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
+      sinatra-sugar (~> 0.5.0)
+    sinatra-reloader (0.5.0)
+      sinatra (~> 1.0)
+      sinatra-advanced-routes (~> 0.5.0)
+    sinatra-sequel (0.9.0)
+      sequel (>= 3.2.0)
+      sinatra (>= 0.9.4)
+    sinatra-sugar (0.5.0)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
+    sqlite3 (1.3.3)
     tilt (1.2.2)
+    treetop (1.4.9)
+      polyglot (>= 0.3.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  compass
+  compass-less-plugin
+  haml
   heroku
+  mysql
+  pony
+  rack-test
+  rspec
+  sequel
   sinatra (= 1.1.2)
+  sinatra-reloader
+  sinatra-sequel
+  sqlite3

@@ -1,0 +1,110 @@
+/* Less Framework 3
+ * by Joni Korpi
+ * http://lessframework.com */
+/* line 8, ../../../../../.rvm/gems/ruby-1.8.7-p302@sinatra/gems/compass-less-plugin-0.8/stylesheets/lessframework/reset/_utilities.scss */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em,
+img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i,
+dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figure, figcaption, hgroup,
+menu, footer, header, nav, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* line 15, ../../../../../.rvm/gems/ruby-1.8.7-p302@sinatra/gems/compass-less-plugin-0.8/stylesheets/lessframework/reset/_utilities.scss */
+article, aside, canvas, figure, figure img, figcaption, hgroup,
+footer, header, nav, section, audio, video {
+  display: block;
+}
+
+/* line 19, ../../../../../.rvm/gems/ruby-1.8.7-p302@sinatra/gems/compass-less-plugin-0.8/stylesheets/lessframework/reset/_utilities.scss */
+a img {
+  border: 0;
+}
+
+/* line 21, ../../../../../.rvm/gems/ruby-1.8.7-p302@sinatra/gems/compass-less-plugin-0.8/stylesheets/lessframework/reset/_utilities.scss */
+figure {
+  position: relative;
+}
+
+/* line 22, ../../../../../.rvm/gems/ruby-1.8.7-p302@sinatra/gems/compass-less-plugin-0.8/stylesheets/lessframework/reset/_utilities.scss */
+figure img {
+  width: 100%;
+}
+
+/* line 35, ../../../../../.rvm/gems/ruby-1.8.7-p302@sinatra/gems/compass-less-plugin-0.8/stylesheets/lessframework/text/_15.scss */
+body {
+  font: 16px/24px Helvetica, Arial, sans-serif;
+}
+
+/* line 9, ../src/styles.scss */
+h1 {
+  font-size: 68px;
+  line-height: 72px;
+  letter-spacing: -1px;
+}
+
+/* line 12, ../src/styles.scss */
+h2 {
+  font-size: 42px;
+  line-height: 48px;
+}
+
+/* line 15, ../src/styles.scss */
+h3 {
+  font-size: 26px;
+  line-height: 36px;
+}
+
+/* line 18, ../src/styles.scss */
+body {
+  background: #e8e8e8;
+  -webkit-tap-highlight-color: yellow;
+}
+
+/* Default 8-column layout
+ * For tablets at 768 px, netbooks, and old browsers. */
+/* line 4, ../src/partials/_8.scss */
+body {
+  width: 648px;
+  padding: 84px 60px 0;
+}
+
+/* 13-column layout
+ * For laptops, desktops, and hdtvs at 1280 px and beyond. */
+@media only screen and (min-width: 1212px) {
+  /* line 5, ../src/partials/_13.scss */
+  body {
+    width: 1068px;
+    padding: 96px 72px 0;
+  }
+}
+
+/* 5-column layout
+ * For 480 px mobiles, narrow browsers, and landscape iPhones. */
+@media only screen and (max-width: 767px) and (min-width: 480px) {
+  /* line 5, ../src/partials/_5.scss */
+  body {
+    width: 396px;
+    padding: 60px 42px 0;
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* 3-column layout
+ * For all iPhones, iPod Touches, and other 320 px mobiles. */
+@media only screen and (max-width: 479px) {
+  /* line 5, ../src/partials/_3.scss */
+  body {
+    width: 228px;
+    padding: 48px 46px 0;
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Overrides for iPhone 4
+ * and other high device-pixel-ratio devices */
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {}
