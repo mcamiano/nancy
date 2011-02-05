@@ -2,17 +2,17 @@
 # Filters
 # Before filters are evaluated before each request within the same context as the routes 
 # and can modify the request and response. 
-    cookie ||= 0 # Set a default
-    cookie = cookie.to_i # Convert to an integer
-    cookie += 1 # Do something with the value
-    response.set_cookie("thing", 
-                        :value => "my cookie value",
-                        :domain => settings.domain,
-                        :path => "/protected/#{myPath}",
-                        :expires => tomorrow
-                        # :secure => true,
-                        # :httponly => true
-                       )
+#   cookie ||= 0 # Set a default
+    #cookie = cookie.to_i # Convert to an integer
+    #cookie += 1 # Do something with the value
+    #response.set_cookie("thing", 
+                        #:value => "my cookie value",
+                        #:domain => settings.domain,
+                        #:path => "/protected/#{myPath}",
+                        #:expires => tomorrow
+                        ## :secure => true,
+                        ## :httponly => true
+                       #)
 
 after '/create/:slug' do |slug|
   session[:last_slug] = slug
@@ -22,11 +22,10 @@ end
 
 
 ###############################################################
-# HTTP Methods
-
+# A Little Presentation Serving App....
 get '/' do
-  remember "most_recently_visited_resource", :value => "/", :for_how_long => tomorrow)
-  previous_resource = recall "most_recently_visited_resource"
+  remember :most_recently_visited_resource, :value=>"/", :for_how_long=>tomorrow
+  this_resource = "/"
 
   content=[]
   content << "<h1>Welcome to Sinatra!</h1>"
@@ -39,9 +38,32 @@ get '/' do
   content << "</ul>"
 
   content << "<h2>Let's Get Started</h2>"
-  content << next_link previous_resource
+  content << next_link("end")
   content.join
 end
+
+PAGE_NARRATIVE.each_with_index do |step,idx|
+  get "/resource/by_name/#{step[:resource]}" do
+    content=[]
+    remember :most_recently_visited_resource, :value=>step[:resource], :for_how_long=>tomorrow
+    content << "<h2>#{step[:title]}</h2>"
+    content << next_link(step[:resource])
+    content << previous_link(step[:resource])
+    content.join
+  end
+  get "/resource/by_class_and_id/page/#{idx}" do
+    content=[]
+    remember :most_recently_visited_resource, :value=>step[:resource], :for_how_long=>tomorrow
+    content << "<h2>#{step[:title]} (page #{idx})</h2>"
+    content << next_link(step[:resource])
+    content << previous_link(step[:resource])
+    content.join
+  end
+end
+###############################################################
+
+
+
 
 get '/resource/:id/page' do
   "Got Flarg"

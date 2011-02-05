@@ -121,6 +121,9 @@ helpers do
     html_attributes.empty? ? "<#{tagname}#{tag_end}" : "<#{tagname} #{html_attributes.map{|k,v| "#{k}='#{v}'"}.join(" ")}#{tag_end}#{content}</#{tagname}>"
   end
 
+
+
+  #####################################################################
   # Useful for setting cookies
   def right_now 
     Time.now.getutc 
@@ -132,32 +135,40 @@ helpers do
     Time.now.getutc+7*24*60*60 
   end
   def encode stringy_thingy
-    CGI::escape(stringy_thingy)
+    CGI::escape(stringy_thingy||"")
   end
   def decode urly_thingy
-    CGI::unescape(urly_thingy)
+    CGI::unescape(urly_thingy||"")
   end
-  def remember what, value, for_how_long
+  def remember(what, options ={} ) # options := value, for_how_long
     return if what.nil?
-    timespan = for_how_long || tomorrow
-    response.set_cookie(what.to_s, :domain => settings.domain, :path => "/", :value => encode what.to_s, :expires => timespan)
+    timespan = options[:for_how_long] || tomorrow
+    response.set_cookie(what.to_s, 
+                        :domain => settings.domain, 
+                        :path => "/", 
+                        :value => encode(options[:value]||""), 
+                        :expires => timespan)
   end
   def recall what
     return "" if what.nil?
     decode request.cookies[what]
   end
 
-  ###############################################################
-  # Application-specific methods and data
-  def html_page n
+
+
+  #####################################################################
+  # Application-specific methods and data for a little presentation app
+  def presentation_page n
     pages[n-1][:resource]
   end
-  def page_resource_path
-    "/resource/#{n}/page"
+  def page_resource_path n
+    "/resource/by_class_and_id/page/#{n}"
   end
-  def page_narrative
-    [
-      { :title => "Let's Start!", :resource => "start",  },
+  def named_page_resource_path name
+    "/resource/by_name/#{name}"
+  end
+  PAGE_NARRATIVE = [ 
+      { :title => "Let's Start!", :resource => "start"},
       { :title => "What is Sinatra About?", :resource => "sinatra"},
       { :title => "Sinatra Minimalism", :resource => "minimalism"}, # Compare to Rails,PHP MVC vs Joomla/Drupal/WP
       { :title => "Hello World", :resource => "hello"},  
@@ -167,18 +178,28 @@ helpers do
       { :title => "Layout and Composition", :resource => "layout"},   # How is HTML layout accomplished?
       { :title => "Hello, C.R.U.D.! (Hello World in a Form)", :resource => "hellocrud"},   # Sudoku, Counter, Clock, Data feeder
       { :title => "Who uses Sinatra?", :resource => "applications"},
-      { :title => "Questions?", :resource => "questions"}
+      { :title => "Questions?", :resource => "questions"},
       { :title => "End", :resource => "end"}
     ]
-  end
-
   def next_movement current_resource
-    page_narrative[((page_narrative.find_index {|page| page[:resource] == current_resource } + 1) % page_narrative.count) || 0]
+    PAGE_NARRATIVE[((PAGE_NARRATIVE.find_index {|page| page[:resource] == current_resource } + 1) % PAGE_NARRATIVE.count) || 0][:resource]
+  end
+  def previous_movement current_resource
+    PAGE_NARRATIVE[((PAGE_NARRATIVE.find_index {|page| page[:resource] == current_resource } - 1) % PAGE_NARRATIVE.count) || PAGE_NARRATIVE.count-1][:resource]
+  end
+  def next_link resource
+    "<a class='button_next' href='#{named_page_resource_path(next_movement(resource))}'>Next</a>"
+  end
+  def previous_link resource
+    "<a class='button_previous' href='#{named_page_resource_path(previous_movement(resource))}'>Previous</a>"
   end
 
-  def previous_movement current_resource
-    page_narrative[((page_narrative.find_index {|page| page[:resource] == current_resource } - 1) % page_narrative.count) || page_narrative.count-1]
-  end
+
+
+
+
+
+
 
   ###############################################################
   # Error Handling

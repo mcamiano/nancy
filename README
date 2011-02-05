@@ -14,6 +14,15 @@ Here is the heroku info:
 
 http://young-sword-922.heroku.com/ | git@heroku.com:young-sword-922.git
 
+Pushing To Heroku: git push heroku master
+Rolling back a screwed up deployment: heroku rollback [ optional vN version number ]
+Heroku processes: heroku ps
+Heroku logs: heroku logs
+ to write to a log: just write to stdout or stderr: puts "Hello, logs!"
+
+
+
+
 Accessing Heroku config in Ruby: 
 ENV["configvarname"]
 
