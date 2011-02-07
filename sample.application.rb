@@ -86,12 +86,30 @@ helpers do
   include Rack::Utils
   alias_method :cdata, :escape_html
 
+  def protected!
+    unless authorized?
+      response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+      throw(:halt, [401, "Not authorized\n"])
+    end
+  end
+
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['admin', 'admin']
+  end
+  
   def partial(template, options={})
     haml template, options.merge(:layout => false)
   end
 
+  # Sinatra doesn't have a lot of clear boilerplate framework support
+  # See http://chriseppstein.github.com/blog/2010/02/08/haml-sucks-for-content/
   def view(class_name, method_name, options={})
     haml :"#{class_name}/#{method_name}", options.merge(:layout => true)
+  end
+
+  def static_file(file_name)
+    File.read(File.join('public', file_name))
   end
 
   def image_tag(image_name,alt_text=image_name,options={})

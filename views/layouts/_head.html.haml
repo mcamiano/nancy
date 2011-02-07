@@ -14,14 +14,13 @@
   
   -# Mobile viewport optimized: j.mp/bplateviewport
   %meta{ :content => "width=device-width, initial-scale=1.0", :name => "viewport" }/
-  
+
   -# Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references
   -# %link{ :href => "/favicon.ico", :rel => "shortcut icon" }/
   -# %link{ :href => "/apple-touch-icon.png", :rel => "apple-touch-icon" }/
   
-  = render :partial => 'layouts/stylesheets'
+  = render :partial => 'stylesheets'
   
   -# All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects
   = javascript_include_tag 'modernizr.min'
   
-  = csrf_meta_tag

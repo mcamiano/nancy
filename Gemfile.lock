@@ -5,8 +5,6 @@ GEM
     backports (1.18.2)
     compass (0.10.6)
       haml (>= 3.0.4)
-    compass-less-plugin (0.8)
-      compass (>= 0.10)
     configuration (1.2.0)
     diff-lcs (1.1.2)
     haml (3.0.25)
@@ -14,6 +12,8 @@ GEM
       json (~> 1.4.6)
       launchy (~> 0.3.2)
       rest-client (>= 1.4.0, < 1.7.0)
+    html5-boilerplate (0.3.0)
+      compass (>= 0.10.0)
     i18n (0.5.0)
     json (1.4.6)
     launchy (0.3.7)
@@ -32,6 +32,8 @@ GEM
     pony (1.1)
       mail (> 2.0)
     rack (1.2.1)
+    rack-flash (0.1.1)
+      rack
     rack-test (0.5.7)
       rack (>= 1.0)
     rake (0.8.7)
@@ -72,11 +74,12 @@ PLATFORMS
 
 DEPENDENCIES
   compass
-  compass-less-plugin
   haml
   heroku
+  html5-boilerplate
   mysql
   pony
+  rack-flash
   rack-test
   rspec
   sequel

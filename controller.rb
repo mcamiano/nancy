@@ -1,4 +1,22 @@
 ###############################################################
+# Hello World
+
+get '/hello world' do
+   haml "%h1{ :style=>'font-size: 30pt;' } Hello World!"
+end
+
+get '/hello_world' do
+   # flash[:notice] = "Hello World!"
+   @hello_world_message = 'Hi there!'
+   haml :"view_name/show", :layout => "layouts/application.html".to_sym
+end
+
+
+
+
+
+
+###############################################################
 # Filters
 # Before filters are evaluated before each request within the same context as the routes 
 # and can modify the request and response. 
@@ -13,12 +31,21 @@
                         ## :secure => true,
                         ## :httponly => true
                        #)
-
-after '/create/:slug' do |slug|
-  session[:last_slug] = slug
-  session["counter"] ||= 0
-  session["counter"] += 1
+after '/hello/:user_name' do |user_name|
+  session[:last_user] = user_name
+  session[user_name+"_counter"] ||= 0
+  session[user_name+"_counter"] += 1
 end
+
+get '/hello/:user_name' do |user_name|
+  # 'Hello, '+user_name+'! you have been here '+(session[user_name+'_counter']||0).to_s() +' times.'
+  "Hello #{user_name}!"
+end
+
+get '/hello' do
+  redirect '/hello/stranger', 303
+end
+
 
 
 ###############################################################
@@ -207,91 +234,92 @@ end
 # and
 # http://rack.rubyforge.org/doc/classes/Rack/Response/Helpers.html
 class Stream
+  def initialize(start=0,increment=100)
+    @start=start
+    @increment=increment
+  end
   def each
-    100.times { |i| yield "Next #{i}<br/>" }
+    @increment.times { |i| yield "#{i+@start} " }
+    @start = last
+  end
+  def last
+    @start+@increment
   end
 end
-# return any object that would either be a valid Rack response, Rack body object or HTTP status code:
-#   An Array with three elements: [status (Fixnum), headers (Hash), response body (responds to #each)]
-#   An Array with two elements: [status (Fixnum), response body (responds to #each)]
-
-#   A Fixnum representing the status code
-get '/server_error' do 500; end
-get '/not_found' do 404; end
-get '/not_found2' do not_found; end
-get '/not_found_with_template' do not_found(haml,404); end
-get '/not_found_with_exception' do raise NotFound; end
-class CustomException < Exception
-  def code
-    401
-  end
-end
-get '/custom_exception' do raise CustomException; end
-get '/partial' do [203, Stream.new ] end
-
 #   An object that responds to #each and passes nothing but strings to the given block
 get('/next') { Stream.new }
+get '/stream' do 
+  start_point = session[:last_partial]||0
+  stream = Stream.new(start_point,1000)
+  session[:last_partial] = stream.last
+  [203, stream] 
+end
+get '/stream_reset'  do 
+  session[:last_partial] = 0 
+  redirect '/stream', 303
+end
+
+
+######################################################################################
+# Other responses return any object that would either be a valid Rack response, 
+# Rack body object or an HTTP status code:
+#   An Array with three elements: [status (Fixnum), headers (Hash), response body (responds to #each)]
+#   An Array with two elements: [status (Fixnum), response body (responds to #each)]
+#   A Fixnum representing the status code
+get '/forbidden' do 403; end
+get '/not_found' do 404; end
+
+
+###############################################################
+# Demo 1
+
+get '/contact_form' do
+  view :contact, :'index.html'
+end
+
+###############################################################
+# Demo 2
+before '/evaluation/*' do
+  protected!   # Require authentication
+end
+
+get '/evaluation' do
+  redirect '/evaluation/index.html', 303
+end
+
+get  '/evaluation/:action' do 
+  view "evaluation", params[:action]
+end
+
+put '/evaluation/' do
+  protected!
+  #
+  # save the evaluation: need migration for evaluations table
+  # get the one-time-pad for the student
+  # get the id for the evaluation
+  # if not saved return 4xx level error
+  # if saved render show view for evaluation
+  #
+  content=[]
+  content << 
+  (1..25).each do |index|
+    # content << "<br/>#{QUESTIONS[index-1]}: #{params['evaluation']['answer'+index.to_s].to_s}"
+    content << "<br/>#{index}: #{params['evaluation']['answer'+index.to_s].to_s}"
+  end
+   
+  [203,  content.join]
+  # [201,  view "evaluation", "show"]
+end
+
 
 
 ###############################################################
 # Use Pony for email confirmations
 require 'pony'
-post '/course_evaluation' do
+post '/pony_submission' do
   Pony.mail :to => 'mamiano@nc.rr.com',
             :from => 'Mitch.Amiano@AgileMarkup.com',
             :subject => 'Course Evaluated!'
 end
 
-
-
-###############################################################
-# Error Handling
-
-# See helpers
-# not_found do
-  # 'This is nowhere to be found.'
-# end
-# error do
-  # 'Sorry there was a nasty error - ' + env['sinatra.error'].name
-# end
-# doesn't work
-# error MyCustomError do
-#  'So what happened was...' + request.env['sinatra.error'].message
-#end
-#get '/bad_place_to_be' do
-#  raise MyCustomError, 'something bad'
-#end
-# handler for code raised
-error 403 do
-  'Access forbidden'
-end
-# or explicitly 
-# get '/secret' do
-#   403
-# end
-# Or a range:
-# error 400..510 do
-#   'Boom'
-# end
-
-
-
-
-
-###############################################################
-# stop a request within a filter or route use:
-# halt
-# halt 410
-# halt 'this will be the body'
-# halt 401, 'go away!'
-# halt 402, {'Content-Type' => 'text/plain'}, 'revenge'
-
-
 __END__
-
-@@ layout
-%html
-  = yield
-
-@@ index
-%div.title Hello world!!!!! inline __END__ data 

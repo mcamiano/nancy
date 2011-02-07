@@ -1,0 +1,163 @@
+.company_logo
+  height: 3cm
+  position: fixed
+  right: 10px
+  bottom: 10px
+  
+article >
+  div
+    float: left
+    width: 348px
+    margin-right: 24px
+    margin-bottom: 24px
+    padding: 24px
+    background: #FFF
+    -moz-border-radius: 10px
+    -webkit-border-radius: 10px
+    border-radius: 10px
+  aside
+    float: right
+    width: 228px
+    img
+      width: 218px
+      padding: 4px
+      background-color: #FFFFFF
+      border: 1px solid #DDDDDD
+      -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2)
+      -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2)
+
+div.answer_legend
+  -webkit-transform: scale(0.7) rotate(-60deg) translate(-140px, 120px) skew(30deg, 0deg)
+  -webkit-transform-origin-x: 0%
+  -webkit-transform-origin-y: 0%
+  -webkit-transition: -webkit-transform 0.75s ease
+  -webkit-transition-property: -webkit-transform
+  -webkit-transition-duration: 0.75s
+  -webkit-transition-timing-function: ease
+  -webkit-transition-delay: initial
+  height: 8em
+  width: 9em
+  text-align: left
+  float: right
+  z-index: 10
+
+form
+  z-index: 11
+  div.question
+    font-weight: bold
+    display: inline-block
+    font-size: 10pt
+    width: 85%
+  div.answers
+    display: inline-block
+    width: auto
+  ul
+    li
+      list-style-type: none
+      padding: 0.2em
+      input, textarea
+        width: 90%
+      label
+        font-weight: bold
+
+@media only screen and (min-width: 1300px)
+  body
+    padding: 96px 72px 0
+    width: 1268px
+    position: relative
+  article >
+    div
+      width: 800px
+      margin-bottom: 24px
+    aside
+      width: 396px
+      img
+        width: 386px
+
+
+@media only screen and (min-width: 1212px) and (max-width: 1300px)
+  body
+    padding: 96px 72px 0
+    width: 1068px
+    position: relative
+  article >
+    div
+      width: 600px
+      margin-bottom: 24px
+    aside
+      width: 396px
+      img
+        width: 386px
+  div.answer_legend
+    font-size: small
+    width: 10em
+    -webkit-transform: scale(0.8) rotate(-90deg) translate(-150px, 50px)
+
+@media only screen and (max-width: 767px) and (min-width: 480px)
+  body
+    padding: 60px 42px 0
+    width: 396px
+    -webkit-text-size-adjust: 100%
+  article >
+    // footer, 
+    div, aside  
+      float: none
+      clear: none
+    div
+      width: 348px
+    aside img
+      width: 386px
+  section
+    h3
+      display: none
+  div.answer_legend
+    font-size: small
+    width: 100%
+    div
+      display: inline-block
+      &:after
+        content: " " 
+      border: solid 1px black
+    -webkit-transform: scale(0.8) rotate(0deg) translate(0,0)
+
+
+@media only screen and (max-width: 479px)
+  body
+    padding: 48px 46px 0
+    width: 228px
+    -webkit-text-size-adjust: 100%
+    font-size: 13px
+    line-height: 18px
+  article >
+    div
+      width: 192px
+      padding: 18px
+      margin-bottom: 18px
+    header > h1
+      font-size: 26px
+      line-height: 36px
+    div
+      > header > h2
+        font-size: 16px
+        line-height: 24px
+      float: none
+      clear: none
+    //footer, 
+    aside  
+      float: none
+      clear: none
+  p, section, aside
+    margin-top: 18px
+  section
+    h3
+      display: none
+  div.answer_legend
+    font-size: small
+    width: 100%
+    div
+      display: inline-block
+      &:after
+        content: " " 
+      border: solid 1px black
+    -webkit-transform: scale(0.8) rotate(0deg) translate(0,0)
+

@@ -45,6 +45,7 @@ use "response.delete_cookie('thing')" to get rid of them
 see  rack-1.0.0/lib/rack/response.rb around line 56 for how they are implemented 
 
 
+
 Bundler Commands:
 -----------------
 When a new feature is added via a gem, it is usually sufficient just to run "bundle".
@@ -64,6 +65,33 @@ bundle update    # Refresh the Gemfile.lock for dependencies of specified and in
 Using PONY on Heroku to Send Mail
 ---------------------------------
 http://ididitmyway.heroku.com/past/2010/12/4/an_email_contact_form_in_sinatra/
+
+
+
+Using Haml
+HAML is as simple as invoking it against a view with a layout file 
+
+HAML is ugly for most HTML content. Use it for Ruby code, and use filters for anything else.
+To quote Chris Eppstein,  "
+Haml lets you pass any block of content through a filter. If you find yourself thinking that Haml is getting in the way, that’s probably because you aren’t using a filter. In any filter, you can use #{} to insert output from code. The following filters are available for processing your content:
+:plain – Simply passes the filtered text through to the generated HTML.
+:cdata – Surrounds the filtered text with a CDATA escape.
+:escaped – Works the same as :plain, but HTML-escapes the text before placing it in the document.
+:erb – Parses the filtered text with ERB – the Rails default template engine.
+:textile – Parses the filtered text with Textile. Only works if RedCloth is installed.
+:markdown – Parses the filtered text with Markdown. Only works if RDiscount, RPeg-Markdown, Maruku, or BlueCloth are installed
+:maruku – Parses the filtered text with Maruku, which has some non-standard extensions to Markdown.
+"
+
+
+
+Using Compass / LessFramework / HTML5 Boilerplate
+Don't. Just use HAML. The other frameworks will just lend confusion and won't further your project along.
+
+
+
+
+
 
 
 

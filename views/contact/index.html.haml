@@ -1,0 +1,42 @@
+%article
+  %header
+    %h2 Evaluation Assistance
+  %aside
+    %h3 About The Site
+    %p This site is for use by students of St. Olufson's University. 
+    %p Want to use the evaluator for your own school? Contact 
+    %a{ :href=>"mailto:mitch.amiano@agilemarkup.com", :title=>"mail mitch at agilemarkup.com"} Mitch.Amiano@AgileMarkup.com
+  %div
+    %p 
+      %section
+      %header
+        %h3 Contact Form
+    %section
+      %p If you experience accessibility issues with this form, please contact the Teaching Center by phone or TTY and we will provide expedited assistance.
+    %section
+      %header
+        %h3 
+      %form{ :action=>"/contact_form", :method=>"post"}
+        %ul
+          %li
+            %label{:for=>"name"} 
+              Your Name:
+            %input{:type=>"text", :name=>"name"}
+          %li
+            %label{:for=>"email"} 
+              Your email address:
+            %input{:type=>"text", :name=>"email"}
+          %li
+            %label{:for=>"to"} 
+              Your message:
+            %textarea{:name=>"message", :rows=>"16", :cols=>"28"}
+          %li
+            %input{:type=>"submit", :value=>"Send"}
+  %aside
+    %header
+      %h3 Requesting Assistance
+    %p Please contact the Teaching and Learning Center if you need assistance filling out an evaluation.
+    %p Call: (919) 555-1212
+  %aside
+    %br
+    %p Produced by Agile Markup Corporation for exclusive use by St. Olufson's University of Somwhere, NC

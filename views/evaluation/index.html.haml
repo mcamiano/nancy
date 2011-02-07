@@ -1,0 +1,39 @@
+%article
+  %header
+    %h2 Course Evaluation for #{@student[:username]}
+  %aside
+    %h3 Instructions
+    %p Please answer each question by selecting the appropriate checkbox on the right.
+  %div
+    %div.answer_legend
+      %div Strongly Agree
+      %div Agree
+      %div Neutral
+      %div Disagree
+      %div Strongly Disagree
+    %section
+      %h3 Because if you hadn't taken that class, you wouldn't be able to graduate.
+    %section
+      %form#new_evaluation{:action => '/evaluation/', :method => 'post' , :name => 'evaluation' }
+        %label{ :for=>"cs" } Select One of Your Current Course Sections: 
+        %select{ :name=>"course_section", :id=>"cs" }
+          -@student[:courses].each do |course|
+            %option{ :value=> course }=course
+        %input{:type=>'hidden', :name=>'_method', :value=>'put'}
+        -QUESTIONS.each_with_index do |question, index|
+          %div.question 
+            #{index+1}: #{question}
+          %div.answers
+            -["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"].each do |answer|
+              %input{:type => "radio",  :id => "answer#{index+1}", :name => "evaluation[answer#{index+1}]", :value => answer}
+        %br
+        %br
+        %input{:type=>"submit", :value=>"Submit Your Evaluation"}
+  %aside
+    %header
+      %h3 Requesting Assistance
+    %p Please contact the Teaching and Learning Center if you need assistance filling out an evaluation.
+    %p Call: (919) 555-1212
+  %aside
+    %br
+    %p Produced by Agile Markup Corporation for exclusive use by St. Olufson's University of Somwhere, NC

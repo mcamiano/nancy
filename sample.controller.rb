@@ -1,3 +1,7 @@
+use Rack::Auth::Basic, "Restricted Area" do |username, password|
+  [username, password] == ['admin', 'admin']
+end
+
 ###############################################################
 # Filters
 # Before filters are evaluated before each request within the same context as the routes 
@@ -208,10 +212,11 @@ class Stream
     100.times { |i| yield "Next #{i}<br/>" }
   end
 end
-# return any object that would either be a valid Rack response, Rack body object or HTTP status code:
+######################################################################################
+# Other responses return any object that would either be a valid Rack response, 
+# Rack body object or an HTTP status code:
 #   An Array with three elements: [status (Fixnum), headers (Hash), response body (responds to #each)]
 #   An Array with two elements: [status (Fixnum), response body (responds to #each)]
-
 #   A Fixnum representing the status code
 get '/server_error' do 500; end
 get '/not_found' do 404; end

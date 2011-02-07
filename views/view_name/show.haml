@@ -1,8 +1,21 @@
-%strong{:class => "code", :id => "message"} Hello, World!
-#content 
-  .left.column
-    %h2 heading
-  .right.column
-    %h2 heading
-    %p http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html
+%article
+  %header
+    %h2 Hello World Example
+  %aside
+    %h3 About The Site
+    %p This site uses Sinatra, HAML, SASS, Compass, Less-Framework, Rack, and several other Ruby components in its construction.
+    %p Demo by 
+    %a{ :href=>"mailto:mitch.amiano@agilemarkup.com", :title=>"mail mitch at agilemarkup.com"} Mitch.Amiano@AgileMarkup.com
+  %div
+    %p 
+      %section
+      %header
+        %h3=@hello_world_message
+  %aside
+    %header
+      %h3 This is an "aside"
+    %p Just to show the message in context of a view
+  %aside
+    %br
+    %p Produced by Agile Markup Corporation for exclusive use by St. Olufson's University of Somwhere, NC
 
