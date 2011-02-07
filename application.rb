@@ -325,7 +325,7 @@ helpers do
     serve_static_file "404.html"
   end
   error do
-    'OW, Something Went Very Wrong Here. (' + env['sinatra.error'].name + ')'
+    'OW, Something Went Very Wrong Here. (' + env['sinatra.error'].username + ')'
   end
   # handler for code raised
   error 403 do
