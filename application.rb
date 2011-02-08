@@ -24,7 +24,7 @@ APP = { :name => "default_app",
 configure do
   use Rack::Flash
 
-  # TODO: convert this to a parse of a static file
+  # TODO: this should come from a parse of a static file
   STUDENTS = [
     { :username=>'johnny', :pad=>'8675309', :courses=>['ENG301:01', 'MAT200:43', 'PHY333:HO'] },
     { :username=>'mary', :pad=>'ABCDEF9', :courses=>['PHI101:03', 'MAT200:43', 'SOC111:01'] },
@@ -114,6 +114,16 @@ helpers do
 
   def find_student_by_credentials credentials
     STUDENTS.detect { |student| [student[:username], student[:pad]] == credentials }
+  end
+
+  def school_year
+    return Time.now.year
+  end
+
+  def semester
+    return "SPRING" if (1..5).to_a.include?(Time.now.month)
+    return "FALL" if (8..12).to_a.include?(Time.now.month)
+    "SUMMER"
   end
 
   # TODO: figure out how to pull this in without pasting
@@ -325,7 +335,8 @@ helpers do
     serve_static_file "404.html"
   end
   error do
-    'OW, Something Went Very Wrong Here. (' + env['sinatra.error'].username + ')'
+    # TODO: LEFTOFF: Heroku is complaining
+    'OW, Something Went Very Wrong Here. (' + request.env['sinatra.error'] + ')'
   end
   # handler for code raised
   error 403 do
