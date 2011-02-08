@@ -108,8 +108,10 @@ helpers do
   def authorized?
     @auth ||=  Rack::Auth::Basic::Request.new(request.env)
     # Check credentials against one-time-pads for this semester
-    @student = find_student_by_credentials @auth.credentials
-    @auth.provided? && @auth.basic? && @auth.credentials && !@student.nil?
+    if @auth.provided? && @auth.basic? && @auth.credentials 
+      @student = find_student_by_credentials @auth.credentials
+    end
+    @student
   end
 
   def find_student_by_credentials credentials
