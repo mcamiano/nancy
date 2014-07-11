@@ -4,11 +4,12 @@
 migration "Create foos" do
   database.create_table :foos do
     primary_key :id
-    text        :bar
-    integer     :baz, :default => 42
-    timestamp   :bizzle, :null => false
+    String      :slug_name, :size=>50
+    String      :description, :size=>120
+    integer     :slug_count, :default => 0
+    timestamp   :created, :null => false
 
-    index :baz, :unique => true
+    index :slug_name, :unique => true
   end
 end
 

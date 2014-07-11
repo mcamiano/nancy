@@ -120,6 +120,17 @@ get '/' do
   'Hello world!'
 end
 
+
+get '/hello_world' do
+   flash[:notice] = "Hello World!"
+   @hello_world_message = 'Hi there!'
+   appinfo[:hit_counter] = appinfo[:hit_counter]+1
+   # Note that locals are not available to a view, but globals are shared by every route over the entire process
+   @hit_count = appinfo[:hit_counter]   # globals can present subtle race conditions and they leak information between routes
+   haml :"view_name/show", :layout => "layouts/application.html".to_sym
+end
+
+
 get %r{/hello/C([\w]+)C} do |name|
   "Hello, #{name}!"
 end

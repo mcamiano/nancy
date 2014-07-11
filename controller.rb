@@ -6,8 +6,12 @@ get '/hello world' do
 end
 
 get '/hello_world' do
-   # flash[:notice] = "Hello World!"
+   protected! 
+
+   flash[:notice] = "Hello World!"
    @hello_world_message = 'Hi there!'
+   appinfo[:hit_counter] = appinfo[:hit_counter]+1
+   @hit_count = appinfo[:hit_counter]
    haml :"view_name/show", :layout => "layouts/application.html".to_sym
 end
 
@@ -56,11 +60,11 @@ get '/' do
 
   content=[]
   content << "<h1>Welcome to Sinatra!</h1>"
-  content << "<h2>These are the routes available:</h2>"
+  content << "<p>These paths are available:</p>"
   content << "<ul>"
   content << File.open("controller.rb").map do |line| 
-    m=line.match(/^ *(get|put|delete|post) +['"]([^ ]*)['"](.*)/)
-    !m.nil? ? "<a href='#{m[2]}'>#{m[1]}: #{m[2]}</a><br/>" : nil
+    m=line.match(/^ *(get|put|delete|post) +['"]([^ ]*)['"](\sdo|\{)#(.*)?/)
+    !m.nil? ? "<a href='#{m[2]}'>#{m[1]}: #{m[4].nil? ? m[2] : m[4]}</a><br/>" : nil
   end.reject(&:nil?).map {|line| "<li>#{line}</li>"}
   content << "</ul>"
 
@@ -164,6 +168,49 @@ end
 
 get '/yodog/:first_name/:last_name' do |first,last|
   "Yo Dog, #{last}, #{first}"
+end
+
+get '/weather' do 
+  redirect '/weather/', 303
+end
+
+get '/weather/:zip?' do |zip|
+  content =[]
+  if !zip.nil?
+    apikey="13fa13d445725fb5"
+    begin
+      f = open("http://api.wunderground.com/api/#{apikey}/animatedradar/q/#{zip}.gif?newmaps=1&timelabel=1&timelabel.y=10&num=5&delay=50")
+    rescue 
+      content << "<h1>Sorry, Weather Underground Radar for #{zip} appears to be offline"
+    else
+      img_content = f.read
+      base64_encoded_image = Base64.encode64(img_content)
+      content << "<h1>Weather Underground Radar for #{zip}</h1>"
+      content << "<img src='data:image/gif;base64,#{base64_encoded_image}' alt='Weather Underground Radar'/>"
+    ensure 
+      f.close if not f.nil?
+    end
+  else
+    content << "<h1>Weather Underground Radar</h1>"
+    content << "<p>Please enter a zip code: </p>"
+    content << "<form>"
+    content << "<input id='zip' type='text' value='' />"
+    content << "<input id='go' type='button' value='Go' />"
+    content << "</form>"
+    content << %{
+      <script>
+      var load = function() {
+        document.getElementById('go').addEventListener("click", function() {
+          var zip = document.getElementById('zip').value;
+          window.location = "/weather/"+zip;
+        });
+      };
+      document.addEventListener("DOMContentLoaded", load, false);  
+      </script>
+    }
+    content.join
+  end
+  
 end
 
 
@@ -301,16 +348,23 @@ put '/evaluation/' do
   # if saved render show view for evaluation
   #
   content=[]
-  content << 
-  (1..25).each do |index|
+  answers_concatenated = (1..25).to_a.map do |index|
+    params['evaluation']['answer'+index.to_s].to_s
+  end.join(",")
+  new_evaluation @student, params['evaluation']['section'].to_s, params['evaluation']['grade'], answers_concatenated
+
+  content << "<h1>Thank You!</h1>"
+  content << "<p>We appreciate the time you took to evaluate your course. Your participation provides valuable feedback to our instructors and administration.</p>"
+  content << "<p>These are the answers you provided:<blockquote>"
+  content << (1..25).each do |index|
     # content << "<br/>#{QUESTIONS[index-1]}: #{params['evaluation']['answer'+index.to_s].to_s}"
     content << "<br/>#{index}: #{params['evaluation']['answer'+index.to_s].to_s}"
   end
+  content << "</blockquote></p>"
    
   [203,  content.join]
   # [201,  view "evaluation", "show"]
 end
-
 
 
 ###############################################################

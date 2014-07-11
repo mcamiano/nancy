@@ -1,49 +1,12 @@
-Run with 
-  bundle exec ruby myapp.rb
+Starting Up
+-----------
+Run the application with 
+  bundle exec ruby application.rb
 
-or use runs.sh
-
-Do migrations with
-  sequel -m data db/migrations/database.yml
-  sequel -m data db/migrations/database.yml -M 1 # migrates to 001
+or, if rackup is in the path,
+  rackup --port 3010 2>&1 | tee server.log
   
-
-
-
-Here is the heroku info:
-
-http://young-sword-922.heroku.com/ | git@heroku.com:young-sword-922.git
-
-Pushing To Heroku: git push heroku master
-Rolling back a screwed up deployment: heroku rollback [ optional vN version number ]
-Heroku processes: heroku ps
-Heroku logs: heroku logs
- to write to a log: just write to stdout or stderr: puts "Hello, logs!"
-
-
-
-
-Accessing Heroku config in Ruby: 
-ENV["configvarname"]
-
-Setting config variables in Heroku:
-http://blog.leshill.org/blog/2010/11/02/heroku-environment-variables.html
-
-Tunneling config variables through Sinatra settings:
-set :prop_name, ENV['prop_name'] || 'development and/or default prop value'
-Use as "settings.prop_name"
-
-Tips here:
-http://blog.heroku.com/archives/2009/3/5/32_deploy_merb_sinatra_or_any_rack_app_to_heroku/
-
-
-Setting Cookies in Sinatra
---------------------------
-use "request.cookies['cookiename'] to get them
-use "response.set_cookie" to set them
-use "response.delete_cookie('thing')" to get rid of them
-see  rack-1.0.0/lib/rack/response.rb around line 56 for how they are implemented 
-
+See bin/Run for an example 
 
 
 Bundler Commands:
@@ -60,15 +23,60 @@ bundle update    # Refresh the Gemfile.lock for dependencies of specified and in
 
 
 
+Database Migrations
+-------------------
+Execute migrations with
+  sequel -m data db/migrations/database.yml
+  sequel -m data db/migrations/database.yml -M 1 # migrates to 001
+  
+
+Heroku Deployment
+-----------------
+Here is the heroku info:
+
+http://young-sword-922.heroku.com/ | git@heroku.com:young-sword-922.git
+
+Pushing To Heroku: git push heroku master
+Rolling back a screwed up deployment: heroku rollback [ optional vN version number ]
+
+Heroku processes: heroku ps
+Heroku logs: heroku logs
+ to write to a log: just write to stdout or stderr: puts "Hello, logs!"
 
 
-Using PONY on Heroku to Send Mail
----------------------------------
+Heroku Programming
+------------------
+Accessing Heroku config in Ruby: 
+ENV["configvarname"]
+
+Setting config variables in Heroku:
+http://blog.leshill.org/blog/2010/11/02/heroku-environment-variables.html
+
+Tunneling config variables through Sinatra settings:
+set :prop_name, ENV['prop_name'] || 'development and/or default prop value'
+Use as "settings.prop_name"
+
+Tips here:
+http://blog.heroku.com/archives/2009/3/5/32_deploy_merb_sinatra_or_any_rack_app_to_heroku/
+
+Use PONY on Heroku to Send Mail: 
 http://ididitmyway.heroku.com/past/2010/12/4/an_email_contact_form_in_sinatra/
 
 
+Setting Cookies in Sinatra
+--------------------------
+use "request.cookies['cookiename'] to get them
+use "response.set_cookie" to set them
+use "response.delete_cookie('thing')" to get rid of them
+see  rack-1.0.0/lib/rack/response.rb around line 56 for how they are implemented 
 
-Using Haml
+
+
+
+
+
+HAML Usage
+----------
 HAML is as simple as invoking it against a view with a layout file 
 
 HAML is ugly for most HTML content. Use it for Ruby code, and use filters for anything else.
@@ -83,355 +91,20 @@ Haml lets you pass any block of content through a filter. If you find yourself t
 :maruku – Parses the filtered text with Maruku, which has some non-standard extensions to Markdown.
 "
 
+Adding Compass / LessFramework / HTML5 Boilerplate
+--------------------------------------------------
+Don't bother if what you are looking for is a framework.
+
+SASS and Less are quite useful as macro languages for CSS. 
+Yet they do not actually advance the starting point of the project. 
+You still need to establish a visual repetoire and conventions for classes and tag overloading.
+
+If you want to use a framework, Twitter Bootstrap or a variation of it is probably the most practical to use.
+It actually does advance the project with "hit the ground running" conventions and code patterns. 
+Bootstrap uses Less and there is at least one fork for Rails that uses SCSS/SASS.
+
+Kickstrap is a very good bundle based on Bootstrap and HTML5Boilerplate. 
+To use Kickstrap, Node.js and NPM are convenient. 
 
 
-Using Compass / LessFramework / HTML5 Boilerplate
-Don't. Just use HAML. The other frameworks will just lend confusion and won't further your project along.
-
-
-
-
-
-
-
-
-
-
-Transcript follows
-Mitchs-MacBook-Pro:sinatra mamiano$ ls -a
-.	..	.rvmrc
-Mitchs-MacBook-Pro:sinatra mamiano$ pwd
-/Users/mamiano/workspace/sandbox/sinatra
-Mitchs-MacBook-Pro:sinatra mamiano$ ls
-Mitchs-MacBook-Pro:sinatra mamiano$ git init
-Initialized empty Git repository in /Users/mamiano/workspace/sandbox/sinatra/.git/
-Mitchs-MacBook-Pro:sinatra mamiano$ ruby --version
-ruby 1.8.7 (2009-06-12 patchlevel 174) [universal-darwin10.0]
-Mitchs-MacBook-Pro:sinatra mamiano$ 
-Mitchs-MacBook-Pro:sinatra mamiano$ ls
-Mitchs-MacBook-Pro:sinatra mamiano$ more .rvmrc
-rvm use ruby-1.8.7-p302@splotchup
-Mitchs-MacBook-Pro:sinatra mamiano$ rvm gemset create sinatra
-'sinatra' gemset created (/Library/Ruby/Gems/1.8@sinatra).
-Mitchs-MacBook-Pro:sinatra mamiano$ vi .rvmr
-Mitchs-MacBook-Pro:sinatra mamiano$ vi .rvmrc
-Mitchs-MacBook-Pro:sinatra mamiano$ cd ..
-Mitchs-MacBook-Pro:sandbox mamiano$ cd sinatra
-
-  ============================================================
-  RVM has encountered a not yet trusted .rvmrc file in the
-  current working directory which contains the following code:
-  ============================================================
-
-rvm use ruby-1.8.7-p302@sinatra
-
-  ============================================================
-  Trusting an .rvmrc file means that whenever you cd into the
-  directory RVM will excecute this .rvmrc script in your shell
-
-  Do you wish to trust this .rvmrc from now on?
-  ============================================================
-  (y for yes, n for no) > y
-error: Gemset 'sinatra' does not exist, rvm gemset create 'sinatra' first.
-info: Using /Users/mamiano/.rvm/gems/ruby-1.8.7-p302 with gemset sinatra
-Mitchs-MacBook-Pro:sinatra mamiano$ rvm gemset create sinatra
-'sinatra' gemset created (/Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra).
-Mitchs-MacBook-Pro:sinatra mamiano$ cd ..
-Mitchs-MacBook-Pro:sandbox mamiano$ rvm gemset
-
-  Usage:
-
-    rvm gemset [action]
-
-  Action:
-
-    {import,export,create,copy,empty,delete,name,dir,list,gemdir,install,pristine,clear,use,update,globalcache}
-
-  Description:
-
-    Commands for working with and manipulating gemsets within RVM.
-
-Mitchs-MacBook-Pro:sandbox mamiano$ rvm gemset list
-Ruby implementation '' is not known.
-gemsets for  (found in /Users/mamiano/.rvm/gems/)
-
-$rvm_ruby_string is not set!
-Mitchs-MacBook-Pro:sandbox mamiano$ rvm gemset list
-Ruby implementation '' is not known.
-gemsets for  (found in /Users/mamiano/.rvm/gems/)
-
-$rvm_ruby_string is not set!
-Mitchs-MacBook-Pro:sandbox mamiano$ cd sinatra
-info: Using /Users/mamiano/.rvm/gems/ruby-1.8.7-p302 with gemset sinatra
-Mitchs-MacBook-Pro:sinatra mamiano$ rvm gemset list
-gemsets for ruby-1.8.7-p302 (found in /Users/mamiano/.rvm/gems/ruby-1.8.7-p302)
-
-
-global
-leapercan
-sinatra
-splotchup
-
-Mitchs-MacBook-Pro:sinatra mamiano$ gem install bundler
-Successfully installed bundler-1.0.9
-1 gem installed
-Installing ri documentation for bundler-1.0.9...
-Installing RDoc documentation for bundler-1.0.9...
-Mitchs-MacBook-Pro:sinatra mamiano$ ls
-Mitchs-MacBook-Pro:sinatra mamiano$ vi Gemfile
-Mitchs-MacBook-Pro:sinatra mamiano$ ls
-Gemfile
-Mitchs-MacBook-Pro:sinatra mamiano$ touch A
-Mitchs-MacBook-Pro:sinatra mamiano$ mv A a
-Mitchs-MacBook-Pro:sinatra mamiano$ ls -l
-total 8
--rw-r--r--  1 mamiano  staff  44 Jan 21 06:30 Gemfile
--rw-r--r--  1 mamiano  staff   0 Jan 21 06:30 a
-Mitchs-MacBook-Pro:sinatra mamiano$ rm a
-Mitchs-MacBook-Pro:sinatra mamiano$ bundle
-Fetching source index for http://rubygems.org/
-Installing rack (1.2.1) 
-Installing tilt (1.2.2) 
-Installing sinatra (1.1.2) 
-Using bundler (1.0.9) 
-Your bundle is complete! It was installed into /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra
-Mitchs-MacBook-Pro:sinatra mamiano$ ls -a
-.		..		.bundle		.git		.rvmRC		Gemfile		Gemfile.lock
-Mitchs-MacBook-Pro:sinatra mamiano$ more Gemfile.lock
-GEM
-  remote: http://rubygems.org/
-  specs:
-    rack (1.2.1)
-    sinatra (1.1.2)
-      rack (~> 1.1)
-      tilt (~> 1.2)
-    tilt (1.2.2)
-
-PLATFORMS
-  ruby
-
-DEPENDENCIES
-  sinatra
-Mitchs-MacBook-Pro:sinatra mamiano$ vi Gemfile
-Mitchs-MacBook-Pro:sinatra mamiano$ 
-Mitchs-MacBook-Pro:sinatra mamiano$ ls
-Gemfile		Gemfile.lock
-Mitchs-MacBook-Pro:sinatra mamiano$ bundle
-Using rack (1.2.1) 
-Using tilt (1.2.2) 
-Using sinatra (1.1.2) 
-Using bundler (1.0.9) 
-Your bundle is complete! It was installed into /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra
-Mitchs-MacBook-Pro:sinatra mamiano$ bundle
-/Users/mamiano/workspace/sandbox/sinatra/Gemfile:4:in `evaluate': compile error (SyntaxError)
-/Users/mamiano/workspace/sandbox/sinatra/Gemfile:4: unterminated string meets end of file
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/lib/bundler/definition.rb:17:in `build'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/lib/bundler.rb:130:in `definition'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/lib/bundler/cli.rb:225:in `install'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/lib/bundler/vendor/thor/task.rb:22:in `send'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/lib/bundler/vendor/thor/task.rb:22:in `run'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/lib/bundler/vendor/thor/invocation.rb:118:in `invoke_task'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/lib/bundler/vendor/thor.rb:246:in `dispatch'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/lib/bundler/vendor/thor/base.rb:389:in `start'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/gems/bundler-1.0.9/bin/bundle:13
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/bin/bundle:19:in `load'
-	from /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra/bin/bundle:19
-Mitchs-MacBook-Pro:sinatra mamiano$ bundle
-Fetching source index for http://rubygems.org/
-Installing rake (0.8.7) 
-Installing configuration (1.2.0) 
-Installing json (1.4.6) with native extensions 
-Installing launchy (0.3.7) 
-Installing mime-types (1.16) 
-Installing rest-client (1.6.1) 
-Installing heroku (1.17.8) 
-Using rack (1.2.1) 
-Using tilt (1.2.2) 
-Using sinatra (1.1.2) 
-Using bundler (1.0.9) 
-Your bundle is complete! It was installed into /Users/mamiano/.rvm/gems/ruby-1.8.7-p302@sinatra
-Mitchs-MacBook-Pro:sinatra mamiano$ heroku help
-=== General Commands
-
-help                                       # show this usage
-version                                    # show the gem version
-
-login                                      # log in with your heroku credentials
-logout                                     # clear local authentication credentials
-
-list                                       # list your apps
-create [<name>]                            # create a new app
-
-keys                                       # show your user's public keys
-keys:add [<path to keyfile>]               # add a public key
-keys:remove <keyname>                      # remove a key by name (user@host)
-keys:clear                                 # remove all keys
-
-info                                       # show app info, like web url and git repo
-open                                       # open the app in a web browser
-rename <newname>                           # rename the app
-
-dynos <qty>                                # scale to qty web processes
-workers <qty>                              # scale to qty background processes
-ps                                         # show process list
-
-sharing:add <email>                        # add a collaborator
-sharing:remove <email>                     # remove a collaborator
-sharing:transfer <email>                   # transfers the app ownership
-
-domains:add <domain>                       # add a custom domain name
-domains:remove <domain>                    # remove a custom domain name
-domains:clear                              # remove all custom domains
-
-ssl:add <pem> <key>                        # add SSL cert to the app
-ssl:remove <domain>                        # removes SSL cert from the app domain
-ssl:clear                                  # remove all SSL certs from the app
-
-rake <command>                             # remotely execute a rake command
-console <command>                          # remotely execute a single console command
-console                                    # start an interactive console to the remote app
-
-restart                                    # restart app servers
-logs                                       # fetch recent log output for debugging
-logs:cron                                  # fetch cron log output
-
-maintenance:on                             # put the app into maintenance mode
-maintenance:off                            # take the app out of maintenance mode
-
-config                                     # display the app's config vars (environment)
-config:add key=val [...]                   # add one or more config vars
-config:remove key [...]                    # remove one or more config vars
-
-stack                                      # show current stack and list of available stacks
-stack:migrate                              # prepare migration of this app to a new stack
-
-db:pull [<database_url>]                   # pull the app's database into a local database
-db:push [<database_url>]                   # push a local database into the app's remote database
-
-bundles                                    # list bundles for the app
-bundles:capture [<bundle>]                 # capture a bundle of the app's code and data
-bundles:download                           # download most recent app bundle as a tarball
-bundles:download <bundle>                  # download the named bundle
-bundles:destroy <bundle>                   # destroy the named bundle
-
-addons                                     # list installed addons
-addons:info                                # list all available addons
-addons:add name [key=value]                # install addon (with zero or more config vars)
-addons:remove name                         # uninstall an addons
-addons:clear                               # uninstall all addons
-
-destroy                                    # destroy the app permanently
-
-=== Plugins
-
-plugins                                    # list installed plugins
-plugins:install <url>                      # install the plugin from the specified git url
-plugins:uninstall <url/name>               # remove the specified plugin
-
-=== Logging (Expanded)
-
-logs --tail                                # realtime logs tail
-logs:drains                                # list syslog drains
-logs:drains add <url>                      # add a syslog drain
-logs:drains remove <url>                   # remove a syslog drain
-logs:drains clear                          # remove all syslog drains
-
-=== heroku-postgresql
-
-pg:info [--db <DATABASE>]                  # show database status
-pg:reset --db <DATABASE>                   # delete all data in the specified database
-pg:promote --db <DATABASE>                 # set a database identifier to the DATABASE_URL
-pg:psql [--db <DATABASE>]                  # open a psql shell to the database (dedicated only)
-pg:ingress [--db <DATABASE>]               # allow new connections from this IP to the database for one minute (dedicated only)
-
-=== pgbackups
-
-pgbackups                                  # list captured backups
-pgbackups:capture [<DB_ID>]                # capture a backup from database ID (default: DATABASE_URL)
-pgbackups:url [<BACKUP_ID>]                # get a temporary URL for a backup
-pgbackups:destroy <BACKUP_ID>              # destroy a backup
-pgbackups:restore <BACKUP_ID> --db <DB_ID> # restore the database ID (default: DATABASE_URL) from a backup
-pgbackups:restore <url> --db <DB_ID>       # restore the database ID (default: DATABASE_URL) from a URL
-
-=== Releases
-
-releases                                   # list releases
-releases:info <release>                    # detailed info for a release
-rollback [<release>]                       # roll back to a prior release
-
-=== Example:
-
- rails myapp
- cd myapp
- git init
- git add .
- git commit -m "my new app"
- heroku create
- git push heroku master
-
-Mitchs-MacBook-Pro:sinatra mamiano$ ls ../../
-GIZMO		canvas		flarg		hoboscript.txt	leapercan	lppsync		mindset		mindset.src	rdwdgroup	sandbox		wcagunit
-Mitchs-MacBook-Pro:sinatra mamiano$ ls ../../leapercan
-Gemfile		README		app		db		lib		public		test		vendor
-Gemfile.lock	Rakefile	config		doc		log		script		tmp
-Mitchs-MacBook-Pro:sinatra mamiano$ ls -a ../../leapercan
-.		.bundle		.rvmrc		Gemfile.lock	Rakefile	config		doc		log		script		tmp
-..		.git		Gemfile		README		app		db		lib		public		test		vendor
-Mitchs-MacBook-Pro:sinatra mamiano$ 
-Mitchs-MacBook-Pro:sinatra mamiano$ ls -a
-.		..		.bundle		.git		.rvmRC		Gemfile		Gemfile.lock
-Mitchs-MacBook-Pro:sinatra mamiano$ mv .rvmRC .rvmrc
-Mitchs-MacBook-Pro:sinatra mamiano$ vi hello.rb
-Mitchs-MacBook-Pro:sinatra mamiano$ git add .
-Mitchs-MacBook-Pro:sinatra mamiano$ git commit -m "playing with sinatra, hello world"
-[master (root-commit) 3b9d231] playing with sinatra, hello world
- 5 files changed, 41 insertions(+), 0 deletions(-)
- create mode 100644 .bundle/config
- create mode 100644 .rvmrc
- create mode 100644 Gemfile
- create mode 100644 Gemfile.lock
- create mode 100644 hello.rb
-Mitchs-MacBook-Pro:sinatra mamiano$ heroku create
-Creating young-sword-922...... done
-http://young-sword-922.heroku.com/ | git@heroku.com:young-sword-922.git
-Git remote heroku added
-Mitchs-MacBook-Pro:sinatra mamiano$ #git push heroku master
-Mitchs-MacBook-Pro:sinatra mamiano$ vi config.ru
-Mitchs-MacBook-Pro:sinatra mamiano$ ls
-Gemfile		Gemfile.lock	config.ru	hello.rb
-Mitchs-MacBook-Pro:sinatra mamiano$ git add config.ru
-Mitchs-MacBook-Pro:sinatra mamiano$ git commit -m "Add support file commit.ru for running sinatra on heroku"
-[master c5a76de] Add support file commit.ru for running sinatra on heroku
- 1 files changed, 2 insertions(+), 0 deletions(-)
- create mode 100644 config.ru
-Mitchs-MacBook-Pro:sinatra mamiano$ git push heroku master
-Counting objects: 11, done.
-Delta compression using up to 4 threads.
-Compressing objects: 100% (7/7), done.
-Writing objects: 100% (11/11), 1.17 KiB, done.
-Total 11 (delta 1), reused 0 (delta 0)
-
------> Heroku receiving push
------> Sinatra app detected
------> Gemfile detected, running Bundler version 1.0.3
-       Unresolved dependencies detected; Installing...
-       Fetching source index for http://rubygems.org/
-       Installing rake (0.8.7) 
-       Installing configuration (1.2.0) 
-       Installing json (1.4.6) with native extensions 
-       Installing launchy (0.3.7) 
-       Installing mime-types (1.16) 
-       Installing rest-client (1.6.1) 
-       Installing heroku (1.17.8) 
-       Installing rack (1.2.1) 
-       Installing tilt (1.2.2) 
-       Installing sinatra (1.1.2) 
-       Using bundler (1.0.3) 
-       Your bundle is complete! It was installed into ./.bundle/gems/
-       Compiled slug size is 1.0MB
------> Launching... done
-       http://young-sword-922.heroku.com deployed to Heroku
-
-To git@heroku.com:young-sword-922.git
- * [new branch]      master -> master
 

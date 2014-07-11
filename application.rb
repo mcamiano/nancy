@@ -9,10 +9,12 @@ require 'haml'           # HTML Template D.S.L. in Ruby; works well with Compass
 require 'sass'           # CSS generation D.S.L. in Ruby, part of Compass
 require 'rack-flash'
 require 'html5-boilerplate'
-
+require 'base64'
+require 'open-uri'
 
 APP = { :name => "default_app",
-    :database_name => "default_app"
+    :database_name => "default_app",
+    :hit_counter => 0
 }
 
 # See 
@@ -24,13 +26,6 @@ APP = { :name => "default_app",
 configure do
   use Rack::Flash
 
-  # TODO: this should come from a parse of a static file
-  STUDENTS = [
-    { :username=>'johnny', :pad=>'8675309', :courses=>['ENG301:01', 'MAT200:43', 'PHY333:HO'] },
-    { :username=>'mary', :pad=>'ABCDEF9', :courses=>['PHI101:03', 'MAT200:43', 'SOC111:01'] },
-    { :username=>'george', :pad=>'GEORGE1', :courses=>['PHI101:03', 'MAT200:43', 'PHY333:HO'] }
-  ]
-
   ###############################################################
   # See
   # https://github.com/rtomayko/sinatra-sequel
@@ -39,7 +34,7 @@ configure do
   set :database, (ENV['SHARED_DATABASE_URL'] || "mysql://root@localhost:3306/#{APP[:name]}") 
 
   # Run migrations if necessary; these execute exactly once per database
-  Dir["db/migrations/[0-9]+.*.rb"].each { |migration| require migration }
+  Dir["db/migrations/[0-9][0-9]*.rb"].each { |migration| require migration }
   # puts "Database not connected" if !database
   # puts "Table 'foos' does not exist" if !database.table_exists?('foos')
 
@@ -80,6 +75,7 @@ configure do
   set :stylesheets_dir, Compass.configuration.css_dir 
   set :stylesheet_source, Compass.configuration.sass_dir 
   set :scripts_dir, Compass.configuration.javascripts_dir 
+  set :appinfo, APP
 end
 
 ###############################################################
@@ -98,6 +94,21 @@ helpers do
   include Rack::Utils
   alias_method :cdata, :escape_html
 
+  def appinfo
+    settings.appinfo
+  end
+
+  # TODO: this should come from a parse of a static file
+  INSTITUTION = "St. Olufson's"
+  STUDENTS = [
+    { :username=>'johnny', :pad=>'8675309', :courses=>['ENG301:01', 'MAT200:43', 'PHY333:HO'] },
+    { :username=>'mary', :pad=>'ABCDEF9', :courses=>['PHI101:03', 'MAT200:43', 'SOC111:01'] },
+    { :username=>'george', :pad=>'GEORGE1', :courses=>['PHI101:03', 'MAT200:43', 'PHY333:HO'] }
+  ]
+
+  class Evaluations < Sequel::Model
+  end
+  
   def protected!
     unless authorized?
       response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
@@ -114,6 +125,10 @@ helpers do
     @student
   end
 
+  def current_student
+    @student
+  end
+
   def find_student_by_credentials credentials
     STUDENTS.detect { |student| [student[:username], student[:pad]] == credentials }
   end
@@ -126,6 +141,26 @@ helpers do
     return "SPRING" if (1..5).to_a.include?(Time.now.month)
     return "FALL" if (8..12).to_a.include?(Time.now.month)
     "SUMMER"
+  end
+
+  def evaluations
+    settings.database[:evaluations]
+  end
+
+  def student_evaluations student
+    evaluations[:pad=>student[:pad]]||[]
+  end
+
+  def evaluated_sections student
+    evaluations.select(:course_section).map(:course_section)
+  end
+
+  def unevaluated_sections student
+    student[:courses] - evaluated_sections(student)
+  end
+
+  def new_evaluation student, section, grade, answers
+    evaluations.insert( :institution=>INSTITUTION, :pad=>student[:pad], :year=>school_year, :semester=>semester, :course_section=>section, :grade_expected=>grade, :answers=>answers, :created=>right_now)
   end
 
   # TODO: figure out how to pull this in without pasting

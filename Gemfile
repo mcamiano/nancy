@@ -10,6 +10,7 @@ gem 'haml'
 gem 'pony'
 gem 'rack-flash'
 gem 'html5-boilerplate'
+# gem 'fancy-buttons'
 gem 'heroku'
 
 

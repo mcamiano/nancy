@@ -5,7 +5,7 @@ migration "Add bar table" do
     text :description
     integer :fuzzle, :default => 7
 
-    foreign_key [:foos_id] :foos
+    foreign_key :foos_id, :foos
   end
 end
 
